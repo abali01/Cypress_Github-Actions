@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       IMAGE_NAME: actions-test
-      IMAGE_TAG: dev
+      TAGS: dev
     
     steps:
 
@@ -41,8 +41,8 @@ jobs:
       uses: redhat-actions/s2i-build@v2
       with:
         path_context: '.'
-        # Builder image for a java project
-        builder_image: 'registry.access.redhat.com/openjdk/openjdk-11-rhel7'
+        # Builder image for a node project
+        builder_image: 'centos/nodejs-10-centos7'
         image: ${{ env.IMAGE_NAME }}
         tags: ${{ env.TAGS }}
 
@@ -60,7 +60,7 @@ jobs:
       uses: aquasecurity/trivy-action@master
       continue-on-error: true
       with:
-        image-ref: 'quay.io/${{ env.DOCKER_REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}'
+        image-ref: 'quay.io/${{ env.DOCKER_REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ env.TAGS }}'
         format: 'table'
         exit-code: '1'
         ignore-unfixed: true
